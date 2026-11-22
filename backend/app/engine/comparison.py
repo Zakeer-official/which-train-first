@@ -9,7 +9,8 @@ from app.schemas.comparison import (
     PredictionSnapshotItem,
     ProbabilisticBounds,
     OvertakePrediction,
-    OuterSignalClashRisk
+    OuterSignalClashRisk,
+    StationRaceMilestone
 )
 from app.engine.eta_calculator import ETACalculator, parse_time_to_minutes, minutes_to_time_str
 from app.engine.probabilistic_eta import ProbabilisticETAEngine
@@ -235,6 +236,67 @@ class TrainComparisonEngine:
         )
         clash_risk = OuterSignalClashRisk(**clash_raw)
 
+        # Compute Station-by-Station Race Milestones
+        stops2_by_code = {s.station_code: s for s in status2.all_stops}
+        milestones: List[StationRaceMilestone] = []
+        dest_upper = dest_station_code.upper()
+
+        for s1 in status1.all_stops:
+            if s1.station_code in stops2_by_code:
+                s2 = stops2_by_code[s1.station_code]
+
+                t1_status = "DEPARTED" if s1.has_departed else ("HALTED" if s1.is_current and status1.speed_kmh == 0 else ("PASSING" if s1.is_current else "UPCOMING"))
+                t2_status = "DEPARTED" if s2.has_departed else ("HALTED" if s2.is_current and status2.speed_kmh == 0 else ("PASSING" if s2.is_current else "UPCOMING"))
+
+                t1_arr_min = parse_time_to_minutes(s1.scheduled_arrival or s1.scheduled_departure, s1.day_count) or 0
+                t1_proj_min = t1_arr_min + s1.delay_arrival_min
+                t1_expected = minutes_to_time_str(t1_proj_min) if t1_arr_min > 0 else (s1.scheduled_arrival or "--")
+
+                t2_arr_min = parse_time_to_minutes(s2.scheduled_arrival or s2.scheduled_departure, s2.day_count) or 0
+                t2_proj_min = t2_arr_min + s2.delay_arrival_min
+                t2_expected = minutes_to_time_str(t2_proj_min) if t2_arr_min > 0 else (s2.scheduled_arrival or "--")
+
+                gap_at_stop = abs(t1_proj_min - t2_proj_min)
+                if t1_proj_min < t2_proj_min:
+                    earlier_train = status1.train_number
+                elif t2_proj_min < t1_proj_min:
+                    earlier_train = status2.train_number
+                else:
+                    earlier_train = "TIE"
+
+                h1 = 2
+                if s1.scheduled_departure and s1.scheduled_arrival:
+                    d1 = parse_time_to_minutes(s1.scheduled_departure, s1.day_count) or 0
+                    a1 = parse_time_to_minutes(s1.scheduled_arrival, s1.day_count) or 0
+                    h1 = max(1, d1 - a1)
+
+                h2 = 2
+                if s2.scheduled_departure and s2.scheduled_arrival:
+                    d2 = parse_time_to_minutes(s2.scheduled_departure, s2.day_count) or 0
+                    a2 = parse_time_to_minutes(s2.scheduled_arrival, s2.day_count) or 0
+                    h2 = max(1, d2 - a2)
+
+                milestones.append(
+                    StationRaceMilestone(
+                        station_code=s1.station_code,
+                        station_name=s1.station_name,
+                        train1_expected_time=t1_expected,
+                        train1_delay_min=s1.delay_arrival_min,
+                        train1_status=t1_status,
+                        train1_halt_min=h1,
+                        train2_expected_time=t2_expected,
+                        train2_delay_min=s2.delay_arrival_min,
+                        train2_status=t2_status,
+                        train2_halt_min=h2,
+                        earlier_train_number=earlier_train,
+                        time_gap_at_station_min=gap_at_stop,
+                        is_destination=(s1.station_code == dest_upper)
+                    )
+                )
+
+                if s1.station_code == dest_upper:
+                    break
+
         return LiveRaceComparison(
             race_id=race_id,
             destination_station_code=dest_station_code.upper(),
@@ -249,6 +311,7 @@ class TrainComparisonEngine:
             eta_gap_minutes=eta_gap,
             predicted_overtake=overtake_pred,
             signal_clash_risk=clash_risk,
+            station_milestones=milestones,
             recent_lead_changes=lead_changes or [],
             history=history or [],
             last_updated=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),

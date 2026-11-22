@@ -21,6 +21,7 @@ import ProgressTracker from "@/components/ProgressTracker";
 import RaceMap from "@/components/RaceMap";
 import HistoricalCharts from "@/components/HistoricalCharts";
 import UpcomingStationsTable from "@/components/UpcomingStationsTable";
+import StationRaceTimeline from "@/components/StationRaceTimeline";
 import ShareModal from "@/components/ShareModal";
 import SignalClashBanner from "@/components/SignalClashBanner";
 import OvertakePredictionCard from "@/components/OvertakePredictionCard";
@@ -238,6 +239,18 @@ export default function LiveRaceDashboard() {
         destLat={raceData.destination_lat}
         destLng={raceData.destination_lng}
       />
+
+      {/* Station-by-Station Race Timeline & Halt Forecast */}
+      {raceData.station_milestones && raceData.station_milestones.length > 0 && (
+        <StationRaceTimeline
+          milestones={raceData.station_milestones}
+          train1Number={raceData.train1.train_number}
+          train2Number={raceData.train2.train_number}
+          train1Name={raceData.train1.train_name}
+          train2Name={raceData.train2.train_name}
+          destinationCode={raceData.destination_station_code}
+        />
+      )}
 
       {/* Upcoming Intermediate Halts Table */}
       <UpcomingStationsTable

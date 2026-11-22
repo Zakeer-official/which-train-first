@@ -92,6 +92,22 @@ export interface PredictionSnapshotItem {
   confidence_score: number;
 }
 
+export interface StationRaceMilestone {
+  station_code: string;
+  station_name: string;
+  train1_expected_time?: string | null;
+  train1_delay_min: number;
+  train1_status: "DEPARTED" | "HALTED" | "PASSING" | "UPCOMING";
+  train1_halt_min: number;
+  train2_expected_time?: string | null;
+  train2_delay_min: number;
+  train2_status: "DEPARTED" | "HALTED" | "PASSING" | "UPCOMING";
+  train2_halt_min: number;
+  earlier_train_number?: string | null;
+  time_gap_at_station_min: number;
+  is_destination: boolean;
+}
+
 export interface LiveRaceComparison {
   race_id: string;
   destination_station_code: string;
@@ -106,6 +122,7 @@ export interface LiveRaceComparison {
   eta_gap_minutes: number;
   predicted_overtake?: OvertakePrediction | null;
   signal_clash_risk?: OuterSignalClashRisk | null;
+  station_milestones?: StationRaceMilestone[];
   recent_lead_changes: LeadChangeItem[];
   history: PredictionSnapshotItem[];
   last_updated: string;

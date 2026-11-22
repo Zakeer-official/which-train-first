@@ -73,6 +73,21 @@ class OuterSignalClashRisk(BaseModel):
     eta_separation_minutes: int
     operational_impact: str
 
+class StationRaceMilestone(BaseModel):
+    station_code: str
+    station_name: str
+    train1_expected_time: Optional[str] = None
+    train1_delay_min: int = 0
+    train1_status: str # DEPARTED, HALTED, PASSING, UPCOMING
+    train1_halt_min: int = 2
+    train2_expected_time: Optional[str] = None
+    train2_delay_min: int = 0
+    train2_status: str # DEPARTED, HALTED, PASSING, UPCOMING
+    train2_halt_min: int = 2
+    earlier_train_number: Optional[str] = None
+    time_gap_at_station_min: int = 0
+    is_destination: bool = False
+
 class LiveRaceComparison(BaseModel):
     race_id: str
     destination_station_code: str
@@ -87,6 +102,7 @@ class LiveRaceComparison(BaseModel):
     eta_gap_minutes: int
     predicted_overtake: Optional[OvertakePrediction] = None
     signal_clash_risk: Optional[OuterSignalClashRisk] = None
+    station_milestones: List[StationRaceMilestone] = []
     recent_lead_changes: List[LeadChangeItem] = []
     history: List[PredictionSnapshotItem] = []
     last_updated: str
