@@ -1,7 +1,7 @@
-# PROJECT STATUS: TRAIN RACE
+# PROJECT STATUS: WHICH TRAIN FIRST
 
 **Last Updated:** November 22, 2026
-**Repository:** `train-race`
+**Repository:** [`Zakeer-official/which-train-first`](https://github.com/Zakeer-official/which-train-first)
 **Status:** COMPLETE & PRODUCTION-READY
 
 ---

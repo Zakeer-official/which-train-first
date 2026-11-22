@@ -4,9 +4,9 @@ import Footer from "@/components/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Train Race — Indian Railway Head-to-Head Train Comparison Platform",
+  title: "Which Train First — Indian Railway Head-to-Head Train Comparison Platform",
   description:
-    "Don't just track trains. Predict which train will reach the destination first with real-time ETA engine, delay analysis, and live speed tracking.",
+    "Inspired by 'Where is My Train'. Don't just track trains. Predict which train will reach the destination first with real-time ETA calculations, delay analysis, and live speed tracking.",
 };
 
 export default function RootLayout({

@@ -1,25 +1,25 @@
-# 🚆 Train Race — Indian Railway Head-to-Head Comparison Platform
+# 🚆 Which Train First — Indian Railway Head-to-Head Comparison Platform
 
-> **Don't just track trains. Predict which train will reach the destination first.**
+> **Inspired by "Where Is My Train" — Don't just track trains. Predict which train will reach the destination first.**
 
+[![GitHub Repo](https://img.shields.io/badge/github-which--train--first-blue.svg)](https://github.com/Zakeer-official/which-train-first)
 [![Backend Tests](https://img.shields.io/badge/tests-10%20passed-brightgreen.svg)]()
 [![FastAPI](https://img.shields.io/badge/backend-FastAPI%201.0-009688.svg)]()
 [![Next.js](https://img.shields.io/badge/frontend-Next.js%2014-black.svg)]()
 [![TypeScript](https://img.shields.io/badge/typescript-strict-blue.svg)]()
-[![Tailwind CSS](https://img.shields.io/badge/styles-TailwindCSS-38bdf8.svg)]()
 
 ---
 
 ## Overview
 
-Existing Indian Railway tracking applications focus on monitoring individual trains in isolation. Passengers, relatives, or railway enthusiasts traveling on different trains towards a common destination (e.g., Mahbubabad, New Delhi, Vijayawada) are forced to switch between multiple tabs and mentally calculate arrival gaps.
+*"Where Is My Train"* famously revolutionized answering the single question: *"Where is my train right now?"*
 
-**Train Race** solves this by providing a unified head-to-head comparison platform that:
-1. Concurrently tracks two trains racing towards a common destination.
-2. Evaluates arrival times using a multi-level ETA framework (live telemetry speed, intermediate halt durations, and delay propagation).
-3. Prominently identifies the predicted leader and exact time margin.
-4. Visualizes dual-route convergence via an interactive OpenStreetMap Leaflet map and linear track tracker.
-5. Enables zero-friction race sharing via WhatsApp and unguessable public URLs requiring no user login.
+**"Which Train First"** takes railway passenger intelligence to the next level by answering the ultimate comparison question:
+> **"Between these two trains heading to my destination, which one will actually arrive first?"**
+
+When passengers, family members, or rail fans track multiple trains towards a shared junction or terminus (such as Mahbubabad, New Delhi, Vijayawada, or Howrah), they usually flip between different tracking screens and manually calculate arrival differences.
+
+**Which Train First** brings simultaneous dual-train tracking into a unified dashboard with physics-based ETA estimation, live telemetry, and instant lead-change detection.
 
 ---
 

@@ -4,7 +4,7 @@ from typing import List
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    APP_NAME: str = "Train Race"
+    APP_NAME: str = "Which Train First"
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
     

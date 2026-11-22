@@ -15,14 +15,14 @@ export default function Navbar() {
           <div>
             <div className="flex items-center space-x-2">
               <span className="font-extrabold text-xl tracking-tight text-white">
-                TRAIN<span className="text-rail-cyan">RACE</span>
+                WHICH<span className="text-rail-cyan">TRAIN</span>FIRST
               </span>
               <span className="text-[10px] font-semibold bg-rail-cyan/10 text-rail-cyan border border-rail-cyan/30 px-1.5 py-0.5 rounded">
                 LIVE
               </span>
             </div>
             <p className="text-[10px] text-slate-400 -mt-1 hidden sm:block">
-              Indian Railway Head-to-Head ETA Engine
+              Inspired by Where Is My Train • Dual ETA Engine
             </p>
           </div>
         </Link>
