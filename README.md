@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/FastAPI-0.110+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
   <img src="https://img.shields.io/badge/Next.js-14_App_Router-black?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js 14" />
   <img src="https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Tests-10%20Passed-10B981?style=for-the-badge&logo=pytest&logoColor=white" alt="Tests" />
+  <img src="https://img.shields.io/badge/Tests-14%20Passed-10B981?style=for-the-badge&logo=pytest&logoColor=white" alt="Tests" />
   <img src="https://img.shields.io/badge/License-MIT-F59E0B?style=for-the-badge" alt="License" />
 </p>
 
@@ -83,11 +83,16 @@ flowchart TD
 ## 🚀 Key Features
 
 - **Side-by-Side Dual Telemetry:** Desktop side-by-side and mobile stacked comparison cards.
+- **Probabilistic AI Forecast Distribution (P10 / P50 / P90):** Eliminates naive deterministic arrival timestamps by calculating optimistic (P10), expected median (P50), and delayed worst-case (P90) confidence bounds, alongside timetable slack recovery calculations.
+- **Outer Home Signal Clash Risk Predictor:** Detects platform congestion when competing trains approach within tight separation margins (<= 10 mins) and alerts passengers to high-probability outer signal detention.
+- **Predicted Physical Overtake Station:** Scans upcoming route stops and cruise telemetry to identify the exact station where a faster trailing train will physically overtake a slower leader on a loop line.
+- **Live Audio Track Commentary:** Built-in Web Speech synthesizer announcing live race updates and lead changes out loud like an authentic station track announcer.
 - **Dynamic Common Destination Discovery:** Automatically analyzes the route stops of both trains and lists all shared upcoming stations (e.g. Mahbubabad, Vijayawada, New Delhi) for 1-click selection.
 - **Interactive OpenStreetMap Leaflet Map:** Live GPS train coordinates, trajectory polylines, and common destination pin.
 - **Dual-Rail Linear Convergence Tracker:** Real-time visual progress bar showing both trains racing along the track towards the common destination station.
 - **Recharts Delay Variance Graphs:** Live trendline tracking whether trains are recovering lost time or losing margin.
 - **Lead-Change Event Log:** Automatically logs timestamped notifications whenever a trailing train overtakes the leader.
+- **Installable Mobile PWA:** Includes a web app manifest (`manifest.json`) enabling standalone installation on Android and iOS devices.
 - **One-Click WhatsApp Sharing:** Generates a public link with prefilled WhatsApp message requiring **no user login or app installation** for the recipient.
 
 ---

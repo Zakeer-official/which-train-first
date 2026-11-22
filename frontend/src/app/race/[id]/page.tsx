@@ -22,6 +22,9 @@ import RaceMap from "@/components/RaceMap";
 import HistoricalCharts from "@/components/HistoricalCharts";
 import UpcomingStationsTable from "@/components/UpcomingStationsTable";
 import ShareModal from "@/components/ShareModal";
+import SignalClashBanner from "@/components/SignalClashBanner";
+import OvertakePredictionCard from "@/components/OvertakePredictionCard";
+import AudioCommentaryButton from "@/components/AudioCommentaryButton";
 
 export default function LiveRaceDashboard() {
   const params = useParams();
@@ -134,6 +137,14 @@ export default function LiveRaceDashboard() {
 
         {/* Refresh & Share Controls */}
         <div className="flex items-center space-x-3">
+          {/* Audio Race Commentary Voice */}
+          <AudioCommentaryButton
+            summaryMessage={raceData.leader.summary_message}
+            leaderNumber={raceData.leader.leader_train_number}
+            marginMin={raceData.leader.margin_minutes}
+            destinationName={raceData.destination_station_name}
+          />
+
           {/* Pause / Resume Auto-Refresh */}
           <button
             onClick={() => setIsAutoRefresh(!isAutoRefresh)}
@@ -182,6 +193,19 @@ export default function LiveRaceDashboard() {
         destinationName={raceData.destination_station_name}
         destinationCode={raceData.destination_station_code}
       />
+
+      {/* Signal Congestion / Outer Home Signal Clash Warning */}
+      {raceData.signal_clash_risk && (
+        <SignalClashBanner
+          clashRisk={raceData.signal_clash_risk}
+          destinationName={raceData.destination_station_name}
+        />
+      )}
+
+      {/* Predicted Physical Overtake Station */}
+      {raceData.predicted_overtake && (
+        <OvertakePredictionCard overtake={raceData.predicted_overtake} />
+      )}
 
       {/* Side-by-Side Train Performance Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

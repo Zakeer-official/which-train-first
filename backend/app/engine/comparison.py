@@ -6,9 +6,14 @@ from app.schemas.comparison import (
     RaceLeaderInfo,
     LiveRaceComparison,
     LeadChangeItem,
-    PredictionSnapshotItem
+    PredictionSnapshotItem,
+    ProbabilisticBounds,
+    OvertakePrediction,
+    OuterSignalClashRisk
 )
 from app.engine.eta_calculator import ETACalculator, parse_time_to_minutes, minutes_to_time_str
+from app.engine.probabilistic_eta import ProbabilisticETAEngine
+from app.engine.overtake_engine import OvertakeAndCongestionEngine
 from app.providers.factory import get_station_metadata
 
 class TrainComparisonEngine:
@@ -105,6 +110,22 @@ class TrainComparisonEngine:
             has_live_speed=(status.speed_kmh > 0)
         )
 
+        # Probabilistic Bounds Calculation
+        prob_stats = ProbabilisticETAEngine.calculate_probabilistic_arrival(
+            base_eta_minutes=final_eta_min,
+            current_delay_min=status.delay_minutes,
+            remaining_distance_km=rem_dist,
+            train_type="SUPERFAST",
+            remaining_stops_count=len(stops_to_dest)
+        )
+        prob_bounds = ProbabilisticBounds(
+            p10_eta=minutes_to_time_str(prob_stats["p10_minutes"]),
+            p50_eta=minutes_to_time_str(prob_stats["p50_minutes"]),
+            p90_eta=minutes_to_time_str(prob_stats["p90_minutes"]),
+            slack_recovery_min=prob_stats["slack_recovery_potential_min"],
+            priority_tier=prob_stats["priority_tier"]
+        )
+
         perf = TrainLivePerformance(
             train_number=status.train_number,
             train_name=status.train_name,
@@ -125,6 +146,7 @@ class TrainComparisonEngine:
             data_freshness_sec=status.data_freshness_seconds,
             confidence_score=confidence,
             level=level,
+            probabilistic_bounds=prob_bounds,
             stops_to_destination=stops_to_dest,
             is_simulated=status.is_simulated,
             data_source=status.data_source
@@ -192,6 +214,27 @@ class TrainComparisonEngine:
             is_tie=is_tie
         )
 
+        # Detect Predicted Overtake Station
+        overtake_raw = OvertakeAndCongestionEngine.detect_predicted_overtake(
+            stops1=status1.all_stops,
+            stops2=status2.all_stops,
+            train1_number=status1.train_number,
+            train2_number=status2.train_number,
+            train1_speed=status1.speed_kmh,
+            train2_speed=status2.speed_kmh,
+            train1_delay=status1.delay_minutes,
+            train2_delay=status2.delay_minutes
+        )
+        overtake_pred = OvertakePrediction(**overtake_raw) if overtake_raw else None
+
+        # Calculate Outer Signal Clash Risk at Destination
+        clash_raw = OvertakeAndCongestionEngine.calculate_outer_signal_clash_risk(
+            eta1_minutes=t1_eta_min,
+            eta2_minutes=t2_eta_min,
+            destination_station_code=dest_station_code
+        )
+        clash_risk = OuterSignalClashRisk(**clash_raw)
+
         return LiveRaceComparison(
             race_id=race_id,
             destination_station_code=dest_station_code.upper(),
@@ -204,6 +247,8 @@ class TrainComparisonEngine:
             train2=perf2,
             leader=leader_info,
             eta_gap_minutes=eta_gap,
+            predicted_overtake=overtake_pred,
+            signal_clash_risk=clash_risk,
             recent_lead_changes=lead_changes or [],
             history=history or [],
             last_updated=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),

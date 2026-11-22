@@ -2,6 +2,13 @@ from pydantic import BaseModel
 from typing import List, Optional
 from app.schemas.train import TrainStopSchema
 
+class ProbabilisticBounds(BaseModel):
+    p10_eta: str
+    p50_eta: str
+    p90_eta: str
+    slack_recovery_min: int
+    priority_tier: str
+
 class TrainLivePerformance(BaseModel):
     train_number: str
     train_name: str
@@ -22,6 +29,7 @@ class TrainLivePerformance(BaseModel):
     data_freshness_sec: int
     confidence_score: float # 0.0 - 1.0
     level: str # LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4
+    probabilistic_bounds: Optional[ProbabilisticBounds] = None
     stops_to_destination: List[TrainStopSchema] = []
     is_simulated: bool = False
     data_source: str
@@ -52,6 +60,19 @@ class PredictionSnapshotItem(BaseModel):
     eta_gap_minutes: int
     confidence_score: float
 
+class OvertakePrediction(BaseModel):
+    overtake_station_code: str
+    overtake_station_name: str
+    overtaking_train: str
+    overtaken_train: str
+    reason: str
+
+class OuterSignalClashRisk(BaseModel):
+    risk_level: str # LOW, MODERATE, CRITICAL
+    clash_probability: float # 0.0 - 1.0
+    eta_separation_minutes: int
+    operational_impact: str
+
 class LiveRaceComparison(BaseModel):
     race_id: str
     destination_station_code: str
@@ -64,6 +85,8 @@ class LiveRaceComparison(BaseModel):
     train2: TrainLivePerformance
     leader: RaceLeaderInfo
     eta_gap_minutes: int
+    predicted_overtake: Optional[OvertakePrediction] = None
+    signal_clash_risk: Optional[OuterSignalClashRisk] = None
     recent_lead_changes: List[LeadChangeItem] = []
     history: List[PredictionSnapshotItem] = []
     last_updated: str

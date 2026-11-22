@@ -14,6 +14,14 @@ export interface TrainStopSchema {
   is_current: boolean;
 }
 
+export interface ProbabilisticBounds {
+  p10_eta: string;
+  p50_eta: string;
+  p90_eta: string;
+  slack_recovery_min: number;
+  priority_tier: string;
+}
+
 export interface TrainLivePerformance {
   train_number: string;
   train_name: string;
@@ -34,9 +42,25 @@ export interface TrainLivePerformance {
   data_freshness_sec: number;
   confidence_score: number;
   level: "LEVEL_1" | "LEVEL_2" | "LEVEL_3" | "LEVEL_4";
+  probabilistic_bounds?: ProbabilisticBounds;
   stops_to_destination: TrainStopSchema[];
   is_simulated: boolean;
   data_source: string;
+}
+
+export interface OvertakePrediction {
+  overtake_station_code: string;
+  overtake_station_name: string;
+  overtaking_train: string;
+  overtaken_train: string;
+  reason: string;
+}
+
+export interface OuterSignalClashRisk {
+  risk_level: "LOW" | "MODERATE" | "CRITICAL";
+  clash_probability: number;
+  eta_separation_minutes: number;
+  operational_impact: string;
 }
 
 export interface RaceLeaderInfo {
@@ -80,6 +104,8 @@ export interface LiveRaceComparison {
   train2: TrainLivePerformance;
   leader: RaceLeaderInfo;
   eta_gap_minutes: number;
+  predicted_overtake?: OvertakePrediction | null;
+  signal_clash_risk?: OuterSignalClashRisk | null;
   recent_lead_changes: LeadChangeItem[];
   history: PredictionSnapshotItem[];
   last_updated: string;

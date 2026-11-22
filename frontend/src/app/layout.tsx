@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   title: "Which Train First — Indian Railway Head-to-Head Train Comparison Platform",
   description:
     "Inspired by 'Where is My Train'. Don't just track trains. Predict which train will reach the destination first with real-time ETA calculations, delay analysis, and live speed tracking.",
+  manifest: "/manifest.json",
+  themeColor: "#00f0ff",
 };
 
 export default function RootLayout({

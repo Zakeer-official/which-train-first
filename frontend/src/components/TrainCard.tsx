@@ -142,6 +142,38 @@ export default function TrainCard({ train, isLeader, destinationName }: Props) {
         </div>
       </div>
 
+      {/* Probabilistic AI Forecast Bounds (P10 / P50 / P90) */}
+      {train.probabilistic_bounds && (
+        <div className="bg-surface/40 border border-surface-border/60 rounded-xl p-3 mb-4 text-xs">
+          <div className="flex items-center justify-between text-[11px] text-slate-400 mb-2">
+            <span className="font-bold text-slate-300">Probabilistic Confidence Interval:</span>
+            <span className="text-emerald-400 font-semibold">
+              Slack Recovery: -{train.probabilistic_bounds.slack_recovery_min}m
+            </span>
+          </div>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="bg-surface/80 rounded-lg p-1.5 border border-surface-border/40">
+              <span className="text-[10px] text-slate-400 block">P10 (Fast)</span>
+              <span className="font-mono font-bold text-emerald-300">
+                {train.probabilistic_bounds.p10_eta}
+              </span>
+            </div>
+            <div className="bg-surface/80 rounded-lg p-1.5 border border-surface-border/40">
+              <span className="text-[10px] text-slate-400 block">P50 (Expected)</span>
+              <span className="font-mono font-bold text-white">
+                {train.probabilistic_bounds.p50_eta}
+              </span>
+            </div>
+            <div className="bg-surface/80 rounded-lg p-1.5 border border-surface-border/40">
+              <span className="text-[10px] text-slate-400 block">P90 (Delayed)</span>
+              <span className="font-mono font-bold text-amber-300">
+                {train.probabilistic_bounds.p90_eta}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Current Position & Telemetry */}
       <div className="border-t border-surface-border/70 pt-3 text-xs space-y-2">
         <div className="flex items-center justify-between text-slate-300">
