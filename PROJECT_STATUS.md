@@ -23,13 +23,18 @@
 - [x] `RapidAPIRailwayProvider`: Production adapter for RapidAPI Indian Railways feeds with retries, exponential backoff, timeouts, and rate limit handling.
 - [x] `factory.py`: Automatic provider selection with graceful fallback.
 
-### Phase 4: Head-to-Head Comparison Engine
+### Phase 4: Head-to-Head Comparison & Advanced Intelligence Engine
 - [x] `ETACalculator`: Computes timetable-derived ETA, physics & station-sequence estimated ETA, and uncertainty intervals.
+- [x] `ProbabilisticETAEngine`: Computes statistical arrival confidence intervals (P10 optimistic, P50 expected, P90 pessimistic) and slack time recovery margins.
+- [x] `OvertakeAndCongestionEngine`:
+  - Detects exact upcoming station where a faster trailing train will physically overtake the leader on a loop line.
+  - Predicts Outer Home Signal platform clash probability (Critical 88%, Moderate 52%, Low 10%) when trains arrive within tight separation margins.
 - [x] `TrainComparisonEngine`:
   - Evaluates independent destination ETAs.
   - Calculates ETA gap: `|ETA_A - ETA_B|`.
   - Determines predicted leader based on earliest arrival (never by current distance alone).
   - Delay trend detection (RECOVERING, WORSENING, STEADY).
+  - Generates unified station-by-station race milestones with halt durations and earlier cover margins.
   - Lead change logging against previous prediction snapshots.
 
 ### Phase 5: FastAPI REST & Streaming Endpoints
@@ -50,10 +55,20 @@
 - [x] Premium dark navy railway intelligence theme (`#080C14`, `#0D1527`, `#00F0FF`, `#10B981`).
 - [x] Screen A: Landing Page (`/`) with Hero, example comparison, features, and recent races.
 - [x] Screen B: Create Race Page (`/create`) with live common station discovery and presets.
-- [x] Screen C: Live Race Dashboard (`/race/[id]`) with prominent leader banner, dual train cards, linear track tracker, interactive Leaflet map, upcoming stations table, and Recharts telemetry trends.
+- [x] Screen C: Live Race Dashboard (`/race/[id]`):
+  - Prominent leader banner & lead margin.
+  - Outer Home Signal Clash Warning banner.
+  - Predicted Physical Overtake Station card.
+  - Dual train telemetry cards with P10/P50/P90 confidence bounds and slack recovery potential.
+  - Dual linear track progress tracker.
+  - Interactive Leaflet OpenStreetMap convergence map.
+  - Station-by-Station Race Timeline with expected delays, halt durations, and milestone leaders.
+  - Recharts historical telemetry trends and lead changes log.
+  - Track Voice Announcement synthesizer (Web Speech API).
 - [x] Screen D: Historical trends & lead changes log.
 - [x] Screen E: Sharing integration (WhatsApp one-click sharing, copy link).
 - [x] Screen F: About & Data Sources (`/about`) disclosing methodology, health status, and disclaimers.
+- [x] Progressive Web App (PWA) manifest support for standalone mobile installation.
 
 ### Phase 7: Live Updates & Caching
 - [x] Centralized caching service (`cache.py`) with TTL to prevent hammering external providers.
@@ -61,7 +76,11 @@
 - [x] Server-Sent Events (SSE) support.
 
 ### Phase 8: Testing & Verification
-- [x] 10 automated unit and integration tests written and executed with `pytest`:
+- [x] 14 automated unit and integration tests written and executed with `pytest` (100% pass rate in 0.24s):
+  - `test_probabilistic_arrival_bounds`
+  - `test_outer_signal_clash_risk_critical`
+  - `test_outer_signal_clash_risk_low`
+  - `test_overtake_prediction`
   - `test_time_parsing_and_conversion` (Overnight journey handling)
   - `test_timetable_derived_eta`
   - `test_backend_estimated_eta`
@@ -72,7 +91,7 @@
   - `test_common_stations_api`
   - `test_create_and_retrieve_race`
   - `test_create_invalid_race_destination_fails`
-- [x] Frontend compiled successfully with `npm run build` (0 TypeScript / lint errors).
+- [x] Frontend compiled successfully with `npm run build` (0 errors).
 
 ### Phase 9: Deployment & DevOps
 - [x] `docker-compose.yml` for containerized dual-service deployment.

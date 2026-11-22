@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   description:
     "Inspired by 'Where is My Train'. Don't just track trains. Predict which train will reach the destination first with real-time ETA calculations, delay analysis, and live speed tracking.",
   manifest: "/manifest.json",
+};
+
+export const viewport = {
   themeColor: "#00f0ff",
 };
 
