@@ -1,162 +1,203 @@
-# 🚆 Which Train First — Indian Railway Head-to-Head Comparison Platform
+# 🚆 Which Train First — Indian Railway Head-to-Head Arrival Engine
 
-> **Inspired by "Where Is My Train" — Don't just track trains. Predict which train will reach the destination first.**
+> **Inspired by *"Where Is My Train"* — Don't just track trains in isolation. Predict which train will reach the destination first.**
 
-[![GitHub Repo](https://img.shields.io/badge/github-which--train--first-blue.svg)](https://github.com/Zakeer-official/which-train-first)
-[![Backend Tests](https://img.shields.io/badge/tests-10%20passed-brightgreen.svg)]()
-[![FastAPI](https://img.shields.io/badge/backend-FastAPI%201.0-009688.svg)]()
-[![Next.js](https://img.shields.io/badge/frontend-Next.js%2014-black.svg)]()
-[![TypeScript](https://img.shields.io/badge/typescript-strict-blue.svg)]()
-
----
-
-## Overview
-
-*"Where Is My Train"* famously revolutionized answering the single question: *"Where is my train right now?"*
-
-**"Which Train First"** takes railway passenger intelligence to the next level by answering the ultimate comparison question:
-> **"Between these two trains heading to my destination, which one will actually arrive first?"**
-
-When passengers, family members, or rail fans track multiple trains towards a shared junction or terminus (such as Mahbubabad, New Delhi, Vijayawada, or Howrah), they usually flip between different tracking screens and manually calculate arrival differences.
-
-**Which Train First** brings simultaneous dual-train tracking into a unified dashboard with physics-based ETA estimation, live telemetry, and instant lead-change detection.
+<p align="center">
+  <a href="https://github.com/Zakeer-official/which-train-first/stargazers"><img src="https://img.shields.io/github/stars/Zakeer-official/which-train-first?style=for-the-badge&logo=github&color=00F0FF" alt="GitHub Stars" /></a>
+  <a href="https://github.com/Zakeer-official/which-train-first/network/members"><img src="https://img.shields.io/github/forks/Zakeer-official/which-train-first?style=for-the-badge&logo=github&color=38BDF8" alt="GitHub Forks" /></a>
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.12" />
+  <img src="https://img.shields.io/badge/FastAPI-0.110+-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/Next.js-14_App_Router-black?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js 14" />
+  <img src="https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tests-10%20Passed-10B981?style=for-the-badge&logo=pytest&logoColor=white" alt="Tests" />
+  <img src="https://img.shields.io/badge/License-MIT-F59E0B?style=for-the-badge" alt="License" />
+</p>
 
 ---
 
-## Key Features
+## 🌟 The Problem & The Inspiration
 
-- **Side-by-Side Dual Telemetry:** Desktop side-by-side and mobile-optimized stacked views showing real-time speeds, remaining route distances, and current reported stations.
-- **Multi-Level Prediction Hierarchy:**
-  - **Level 1 (Live Telemetry):** GPS coordinates & live cruising speed.
-  - **Level 2 (Sequence Engine):** Track sequence distance calculation incorporating intermediate halt durations.
-  - **Level 3 (Timetable Blend):** Official timetable blended with latest observed departure delay.
-  - **Level 4 (Stale Warning):** Transparent warnings when data freshness exceeds thresholds.
-- **Dynamic Common Destination Validation:** Automatically scans routes of both trains to identify common upcoming stations.
-- **Lead-Change Tracking:** Captures and logs every change of lead with timestamps and margin evolution.
-- **Live Auto-Refresh & SSE:** Server-Sent Events stream with client-side countdown timer and pause/resume controls.
-- **One-Click Sharing:** WhatsApp prefilled sharing and clipboard copy for public race sessions.
+**"Where Is My Train"** famously revolutionized how millions of Indian railway passengers answer one question:  
+👉 *"Where is my train right now?"*
 
----
+However, in real life, Indian railway travelers constantly face a different dilemma:
 
-## Technology Stack
+> **"My brother is traveling on Train 12656 (Navjeevan SF), and I am on Train 12705 (Gouthami SF). We are both meeting our family at Mahbubabad (MABD). Who will reach first? Should I book a cab now or wait for him?"**
 
-### Frontend
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS with custom dark navy railway theme
-- **Icons:** Lucide React
-- **Charts:** Recharts
-- **Maps:** Leaflet & OpenStreetMap
+Until now, answering this meant:
+1. Opening tracking apps.
+2. Checking Train 1's delay and station.
+3. Switching to Train 2's screen and checking its delay and station.
+4. Doing mental math comparing remaining distances, track halts, and delay propagation.
+5. Guessing who will win.
 
-### Backend
-- **Framework:** Python 3.12 + FastAPI
-- **Validation:** Pydantic V2 + Pydantic Settings
-- **ORM & Database:** SQLAlchemy (async) with SQLite for local development and PostgreSQL support for production
-- **Testing:** Pytest & pytest-asyncio
-- **HTTP Client:** HTTPX
+**Which Train First** automates this entirely with a real-time head-to-head comparison engine, multi-level ETA physics, and instant WhatsApp race alerts.
 
 ---
 
-## Architecture
+## 🏁 Live Comparison Dashboard Preview
 
+```text
+┌────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│  🏆 PREDICTED WINNER: Train 12656 (Navjeevan Superfast Express)                                        │
+│  Arrival Margin: Predicted to reach Mahbubabad (MABD) 18 minutes earlier than Train 12705             │
+│  Final Destination ETA: 02:24 AM  •  Current Delay: +18m (Recovering)  •  Confidence: 94%             │
+└────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+  [ Train 1: 12656 Navjeevan Express ]              [ Train 2: 12705 Gouthami Express ]
+  • Current Station: Warangal (WL)                  • Current Station: Kazipet (KZJ)
+  • Cruising Speed: 82 km/h                         • Cruising Speed: 74 km/h
+  • Delay: +18 min (Recovering)                     • Delay: +7 min (Steady)
+  • Remaining to MABD: 60 km                        • Remaining to MABD: 70 km
+  • Estimated Arrival: 02:24 AM                     • Estimated Arrival: 02:42 AM
+  • Status: LEVEL 1 (Live GPS Telemetry)            • Status: LEVEL 1 (Live GPS Telemetry)
 ```
-train-race/
+
+---
+
+## 🧠 Multi-Level ETA Engine
+
+Why simple distance calculation fails in railways:
+- Railway tracks are divided into block sections with strict signaling priority.
+- Superfast trains get priority over passenger/express services.
+- Intermediate halts require deceleration, passenger boarding, and acceleration overhead.
+
+**Which Train First** calculates ETAs through an explicit 4-level fallback hierarchy:
+
+```mermaid
+flowchart TD
+    A["Raw Railway Telemetry / Provider Feed"] --> B{"Data Quality Gate"}
+    B -->|"Level 1: Live Telemetry"| L1["Real-time Cruising Speed + Dynamic Segment Distance + Intermediate Halts"]
+    B -->|"Level 2: Sequence Model"| L2["Track Sequence Distance Graph + Scheduled Halt Durations"]
+    B -->|"Level 3: Timetable Fallback"| L3["Timetable Scheduled Arrival + Latest Observed Departure Delay"]
+    B -->|"Level 4: Stale Telemetry"| L4["Transparent Stale Data Disclosure (>15m threshold)"]
+    L1 & L2 & L3 --> C["Head-to-Head Comparison Engine"]
+    C --> D["ETA Gap = |ETA_A - ETA_B|"]
+    D --> E["Earliest Arrival Declared Leader (Never Distance Alone)"]
+    E --> F["Lead-Change Logged if Ranking Shifts"]
+    F --> G["Live SSE / WebSocket Stream to Dashboard"]
+```
+
+---
+
+## 🚀 Key Features
+
+- **Side-by-Side Dual Telemetry:** Desktop side-by-side and mobile stacked comparison cards.
+- **Dynamic Common Destination Discovery:** Automatically analyzes the route stops of both trains and lists all shared upcoming stations (e.g. Mahbubabad, Vijayawada, New Delhi) for 1-click selection.
+- **Interactive OpenStreetMap Leaflet Map:** Live GPS train coordinates, trajectory polylines, and common destination pin.
+- **Dual-Rail Linear Convergence Tracker:** Real-time visual progress bar showing both trains racing along the track towards the common destination station.
+- **Recharts Delay Variance Graphs:** Live trendline tracking whether trains are recovering lost time or losing margin.
+- **Lead-Change Event Log:** Automatically logs timestamped notifications whenever a trailing train overtakes the leader.
+- **One-Click WhatsApp Sharing:** Generates a public link with prefilled WhatsApp message requiring **no user login or app installation** for the recipient.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | Next.js 14 (App Router), TypeScript, Tailwind CSS, Lucide React, Recharts, Leaflet / OpenStreetMap |
+| **Backend** | Python 3.12, FastAPI, Pydantic V2, Pydantic Settings, SQLAlchemy (Async), Uvicorn |
+| **Database** | SQLite + `aiosqlite` for local dev; PostgreSQL ready for production |
+| **Cache** | In-memory TTL caching + Redis extension |
+| **Testing** | Pytest, `pytest-asyncio`, HTTPX (10 automated tests with 100% pass rate) |
+| **DevOps** | Docker, Docker Compose, GitHub Actions |
+
+---
+
+## 📁 Repository Structure
+
+```text
+which-train-first/
 ├── backend/
 │   ├── app/
-│   │   ├── main.py              # FastAPI app & lifespan configuration
-│   │   ├── config.py            # Environment settings
-│   │   ├── database.py          # Async SQLAlchemy engine
-│   │   ├── models/              # Train, Station, RaceSession, Snapshots
-│   │   ├── schemas/             # Pydantic request/response schemas
-│   │   ├── providers/           # Base provider, RapidAPI, Demo provider
-│   │   ├── engine/              # ETACalculator & TrainComparisonEngine
-│   │   ├── api/                 # Trains, Stations, Races, Health endpoints
-│   │   └── services/            # Cache service & Race service
-│   ├── tests/                   # 10 automated unit and integration tests
+│   │   ├── main.py                  # FastAPI application & lifespan management
+│   │   ├── config.py                # Environment configuration
+│   │   ├── database.py              # Async SQLAlchemy database engine
+│   │   ├── models/                  # Train, Station, RaceSession, Snapshots, LeadChanges
+│   │   ├── schemas/                 # Pydantic schemas for data validation
+│   │   ├── providers/               # Abstract Provider, High-fidelity Demo, RapidAPI
+│   │   ├── engine/                  # ETACalculator & TrainComparisonEngine
+│   │   ├── api/                     # REST endpoints: trains, stations, races, health
+│   │   └── services/                # Caching & race session management
+│   ├── tests/                       # 10 automated unit & integration tests
 │   └── requirements.txt
 ├── frontend/
 │   ├── src/
-│   │   ├── app/                 # Next.js App Router (Landing, Create, Race, About)
-│   │   ├── components/          # TrainCard, RaceLeaderBanner, ProgressTracker, Map
-│   │   └── lib/                 # API client & TypeScript interfaces
+│   │   ├── app/                     # Next.js 14 App Router
+│   │   │   ├── page.tsx             # Landing Page with Hero & Recent Races
+│   │   │   ├── create/page.tsx      # Create Race with Auto-Destination Discovery
+│   │   │   ├── race/[id]/page.tsx   # Live Race Dashboard
+│   │   │   └── about/page.tsx       # Data Sources, Health & Methodology
+│   │   ├── components/              # TrainCard, RaceLeaderBanner, Map, Charts, Tracker
+│   │   └── lib/                     # API client & TypeScript interfaces
 │   └── package.json
-├── docker-compose.yml
-├── PROJECT_STATUS.md
-└── README.md
+├── docker-compose.yml               # Containerized full-stack deployment
+├── .env.example                     # Environment variables template
+├── PROJECT_STATUS.md                # Task tracking & verification checklist
+└── README.md                        # Documentation
 ```
 
 ---
 
-## Getting Started
+## 💻 Getting Started Locally
 
-### Prerequisites
-- Python 3.10+
-- Node.js 18+ and npm
-
-### 1. Clone & Setup Repository
+### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/train-race.git
-cd train-race
+git clone https://github.com/Zakeer-official/which-train-first.git
+cd which-train-first
 ```
 
-### 2. Backend Setup
+### 2. Run Backend
 ```bash
 cd backend
 python -m venv venv
 
-# Windows
+# Windows:
 .\venv\Scripts\activate
-# Linux/macOS
+# Linux / macOS:
 source venv/bin/activate
 
 pip install -r requirements.txt greenlet
-```
 
-Run tests:
-```bash
+# Run automated tests
 $env:PYTHONPATH = "."
 pytest -v
-```
 
-Start backend API:
-```bash
+# Start FastAPI server
 uvicorn app.main:app --reload --port 8000
 ```
-API Documentation: [http://localhost:8000/docs](http://localhost:8000/docs)
+*Interactive Swagger API documentation: [http://localhost:8000/docs](http://localhost:8000/docs)*
 
-### 3. Frontend Setup
-In a new terminal:
+### 3. Run Frontend
+In a separate terminal:
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+*Open application: [http://localhost:3000](http://localhost:3000)*
 
 ---
 
-## Docker Deployment
+## 🐳 Docker Deployment
 
-Run both backend and frontend via Docker Compose:
+Run both backend and frontend in isolated containers:
 ```bash
 docker-compose up --build
 ```
 
 ---
 
-## Environment Variables
+## ⭐ Support & Community
 
-Copy `.env.example` to `.env`:
-```ini
-ENVIRONMENT=development
-DATABASE_URL=sqlite+aiosqlite:///./train_race.db
-RAILWAY_API_PROVIDER=demo # or "rapidapi"
-RAPIDAPI_KEY=your_key_here
-REFRESH_INTERVAL_SECONDS=15
-```
+If you find this concept innovative or useful for Indian Railway travelers:
+- ⭐ **Star this repository** to help others discover it!
+- 🔀 **Fork & Contribute:** PRs for new station coordinates, additional railway data adapters, and UI enhancements are welcome.
+- 💬 **Share with fellow travelers** on WhatsApp, Twitter/X, and Reddit!
 
 ---
 
-## Data Disclosure & Disclaimer
-
-Train Race is an independent analytical application. For official reservation and ticketing, refer to [IRCTC](https://www.irctc.co.in).
+<p align="center">
+  <b>Which Train First</b> • Built with ❤️ for Indian Railway Commuters
+</p>

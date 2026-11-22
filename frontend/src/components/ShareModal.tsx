@@ -28,8 +28,8 @@ export default function ShareModal({
 
   if (!isOpen) return null;
 
-  const raceUrl = typeof window !== "undefined" ? window.location.href : `https://train-race.vercel.app/race/${raceId}`;
-  const shareMessage = `🚆 Train Race Live: ${train1Number} vs ${train2Number} towards ${destinationName}!\nCurrently Train ${leaderNumber} is predicted to arrive ${marginMin} mins earlier.\nTrack live here: ${raceUrl}`;
+  const raceUrl = typeof window !== "undefined" ? window.location.href : `https://which-train-first.vercel.app/race/${raceId}`;
+  const shareMessage = `🚆 Which Train First Live: ${train1Number} vs ${train2Number} towards ${destinationName}!\nCurrently Train ${leaderNumber} is predicted to arrive ${marginMin} mins earlier.\nTrack live here: ${raceUrl}`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(raceUrl);

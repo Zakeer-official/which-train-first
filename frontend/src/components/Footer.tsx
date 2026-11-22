@@ -7,11 +7,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div>
             <div className="font-semibold text-slate-200 mb-2 flex items-center space-x-2">
-              <span>Train Race Intelligence</span>
-              <span className="w-2 h-2 rounded-full bg-rail-leader animate-pulse"></span>
+              <span>Which Train First Intelligence</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-rail-leader animate-pulse"></span>
             </div>
             <p className="text-slate-400 leading-relaxed">
-              Real-time Indian Railways dual-train comparison platform. Predicting destination arrivals using multi-level telemetry, track sequence algorithms, and live running delay propagation.
+              Inspired by Where Is My Train — Real-time Indian Railways dual-train comparison platform. Predicting destination arrivals using multi-level telemetry, track sequence algorithms, and live running delay propagation.
             </p>
           </div>
           <div>
